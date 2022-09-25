@@ -1,11 +1,17 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-export default class ImageGalleryItem extends Component {
-  render() {
-    return (
-        <li className="gallery-item">
-            <img src="" alt="" />
-        </li>
-    )
-  }
+
+
+export default function ImageGalleryItem({items}) {
+  console.log(items)
+  const elements = items.map(({id, webformatURL}) => <li key={id} className="gallery-item">
+            <img src={webformatURL} alt="" />
+        </li>)
+  return (
+    <>
+      {elements}
+    </>
+    
+  )
 }
+

@@ -53,6 +53,7 @@ export default class PostsSearch extends Component {
     this.setState({
       search
     })
+
   }
 
   render() {
@@ -63,7 +64,7 @@ export default class PostsSearch extends Component {
         <Searchbar onSubmit={ onSearch} />
         {loading && <Loader />}
         {error && <p>Будь ласка спробуйте пізніше...</p>}
-        {items.length && <ImageGallery />}
+        {items.length && <ImageGallery items={items} />}
       </>
     )
   }

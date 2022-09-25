@@ -23,6 +23,7 @@ export default class Searchbar extends Component {
     console.log("handleSubmit")
     const { onSubmit } = this.props
     onSubmit({ ...this.state })
+        console.log(onSubmit)
     this.reset()
   }
 
