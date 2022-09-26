@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import css from 'components/Searchbar/Searchbar.module.css'
 // import { nanoid } from 'nanoid'
+import PropTypes from 'prop-types'
 
 
 export default class Searchbar extends Component {
@@ -56,4 +57,8 @@ export default class Searchbar extends Component {
         </header>
     )
   }
+}
+
+Searchbar.propTupes = {
+  onSubmit: PropTypes.func.isRequired
 }

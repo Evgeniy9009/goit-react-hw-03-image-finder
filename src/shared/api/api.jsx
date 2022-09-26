@@ -1,4 +1,5 @@
 import axios from "axios"
+import PropTypes from 'prop-types'
 
 const URL = "https://pixabay.com/api"
 const MY_KEY = "29140454-a281ece1e755381c74175cb00"
@@ -15,7 +16,10 @@ export const searchPosts = async (q, page = 1) => {
 //     return response.data.hits
 // }
 
-
+searchPosts.propTypes = {
+    q: PropTypes.string.isRequired,
+    page: PropTypes.number.isRequired
+}
 
 
 

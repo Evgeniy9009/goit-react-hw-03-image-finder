@@ -1,6 +1,7 @@
 import React from 'react'
 import css from 'components/ImageGallery/ImageGalleryItem/ImageGalleryItem.module.css'
 // import { nanoid } from 'nanoid'
+import PropTypes from 'prop-types'
 
 
 export default function ImageGalleryItem({items, onClick}) {
@@ -16,5 +17,16 @@ export default function ImageGalleryItem({items, onClick}) {
     </>
     
   )
+}
+
+ImageGalleryItem.propTypes = {
+  items: PropTypes.arrayOf( 
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL:PropTypes.string.isRequired
+    })
+  ),
+  onClick: PropTypes.func.isRequired
 }
 
