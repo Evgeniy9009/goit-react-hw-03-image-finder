@@ -6,7 +6,7 @@ const LIMIT = 12
 
 export const searchPosts = async (q, page = 1) => {
     const {data} = await axios.get(`${URL}/??page=${page}&key=${MY_KEY}&q=${q}&image_type=photo&orientation=horizontal&per_page=${LIMIT}`)
-    console.log(data.hits)
+    console.log("searchPosts: ", data.hits)
     return data.hits
     
 }
