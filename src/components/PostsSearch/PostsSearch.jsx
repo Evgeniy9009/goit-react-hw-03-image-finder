@@ -22,13 +22,18 @@ export default class PostsSearch extends Component {
   }
 
   componentDidUpdate(_, prevState) {
-    const { search, page} = this.state
-    if ((search && prevState.search !== search) ) {
+    const { search, page } = this.state
+    
+    // if ((search && prevState.search !== search || page > prevState.page) ) {
+    //   this.fetchPosts(search, page)
+    // } 
+
+    if (page > prevState.page) {
+      this.fetchPostsNextPage(search, page)
+    }
+        if ((search && prevState.search !== search) ) {
       this.fetchPosts(search, page)
     } 
-    if (page > prevState.page) {
-      this.fetchPostsPage(search, page)
-    }
   }
 
 
@@ -84,13 +89,24 @@ export default class PostsSearch extends Component {
     })
   }
 
-  loadMore = () => {
-    this.setState(({ prevState }) => {
-      return {
-        page: prevState.page + 1
-      }  
+  // loadMore = () => {
+  //   console.log("loadMore", this.state.page)
+  //   this.setState(({ page }) => {
+  //     return {
+  //       page: page + 1
+  //     }  
+  //   })
+  // }
+  
+    loadMore = () => {
+    this.setState(({page}) => {
+        return {
+            page: page + 1
+        }
     })
   }
+
+
 
   openModal = (modalContent) => {
     console.log("openModal", modalContent)
