@@ -10,6 +10,7 @@ import Modal from 'shared/Modal/Modal'
 export default class PostsSearch extends Component {
 
   state = {
+    totalHits: null,
     items: [],
     loading: false,
     error: null,
@@ -23,20 +24,30 @@ export default class PostsSearch extends Component {
 
   componentDidUpdate(_, prevState) {
     const { search, page } = this.state
+    // const {state} = this
     
-    // if ((search && prevState.search !== search || page > prevState.page) ) {
-    //   this.fetchPosts(search, page)
-    // } 
-
-    if (page > prevState.page) {
+    if (prevState.search !== search || page !== prevState.page) {
       this.fetchPostsNextPage(search, page)
     }
-        if ((search && prevState.search !== search) ) {
-      this.fetchPosts(search, page)
-    } 
+    if (prevState.search !== search) {
+      this.setState(({ items, search, page }) => {
+        return {
+          items: [],
+          search,
+          page: 1,
+        }
+      })
+    }
   }
 
-
+  //   if (page > prevState.page) {
+  //     this.fetchPostsNextPage(search, page)
+  //   }
+  //       if ((search && prevState.search !== search) ) {
+  //     this.fetchPosts(search, page)
+  //   } 
+  // }
+  
   async fetchPosts() {
     const { search, page } = this.state
     this.setState({
@@ -44,7 +55,7 @@ export default class PostsSearch extends Component {
     })
     try {
       const data = await searchPosts(search, page)
-      this.setState(({ items }) => {
+      this.setState(() => {
         return {
           items: [...data]
         }
@@ -67,9 +78,13 @@ export default class PostsSearch extends Component {
     })
     try {
       const data = await searchPosts(search, page)
+      const hits = data.hits
+      const totalHits = data.totalHits
+      console.log("totalHits : " , totalHits)
       this.setState(({ items }) => {
         return {
-          items: [...items, ...data]
+          totalHits,
+          items: [...items, ...hits]
         }
       })
     } catch (error) {
@@ -98,8 +113,9 @@ export default class PostsSearch extends Component {
   //   })
   // }
   
-    loadMore = () => {
-    this.setState(({page}) => {
+  loadMore = () => {
+    this.setState(({ page }) => {
+      console.log(page)
         return {
             page: page + 1
         }
@@ -127,7 +143,7 @@ export default class PostsSearch extends Component {
 
 
   render() {
-    const { items, loading, error, modalOpen, modalContent } = this.state;
+    const { totalHits ,items, loading, error, modalOpen, modalContent } = this.state;
     const {onSearch, loadMore, openModal, closeModal} = this
     return (
       <>
@@ -135,8 +151,7 @@ export default class PostsSearch extends Component {
         {modalOpen && <Modal onClose={closeModal} modalContent={modalContent} />}
         {loading && <Loader />} 
         {error && <p>Будь ласка спробуйте пізніше...</p>}
-
-
+        {totalHits === 0 && <p>Нічього не знайдено...</p>}
 
         {items.length && <ImageGallery items={items} onClick={openModal} largeImageURL={modalContent.largeImageURL} />}
         {items.length >= 12 && <Button onClick={loadMore} text="Load more"/>}

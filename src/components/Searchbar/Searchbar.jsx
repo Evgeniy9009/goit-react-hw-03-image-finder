@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import css from 'components/Searchbar/Searchbar.module.css'
-// import { nanoid } from 'nanoid'
+
 import PropTypes from 'prop-types'
 
 
@@ -8,8 +8,6 @@ export default class Searchbar extends Component {
   state = {
     search: ""
   }
-
-  // searchId = nanoid()
 
   handleChange = (e) => {
     console.log("handleChange")
@@ -25,14 +23,14 @@ export default class Searchbar extends Component {
     const { onSubmit } = this.props
     onSubmit({ ...this.state })
         console.log(onSubmit)
-    this.reset()
+    // this.reset()
   }
 
-  reset() {
-    this.setState({
-      search: ""
-    })
-  }
+  // reset() {
+  //   this.setState({
+  //     search: ""
+  //   })
+  // }
 
   render() {
     const { search } = this.state
