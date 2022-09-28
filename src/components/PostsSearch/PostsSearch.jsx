@@ -137,7 +137,8 @@ openModal = (modalContent) => {
         {totalHits === 0 && <p>Нічього не знайдено...</p>}
         {items.length && <ImageGallery items={items} onClick={openModal} largeImageURL={modalContent.largeImageURL} />}
         {loading &&<Loader />} 
-        {!loading && 0 < items.length < totalHits-1 && <Button onClick={loadMore} text="Load more" />}
+        {!loading && 0 < items.length && items.length < totalHits && <Button onClick={loadMore} text="Load more" />}
+        {/* {!loading && 0 < items.length < totalHits-1 && <Button onClick={loadMore} text="Load more" />} */}
       </>
     )
   }
