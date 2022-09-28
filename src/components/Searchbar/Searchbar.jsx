@@ -1,5 +1,6 @@
 import { Component } from 'react'
 import css from 'components/Searchbar/Searchbar.module.css'
+import { ImSearch } from "react-icons/im";
 
 import PropTypes from 'prop-types'
 
@@ -36,10 +37,11 @@ export default class Searchbar extends Component {
     const { search } = this.state
     const { handleChange, handleSubmit} = this
     return (
-        <header className={css.searchbar}>
+              // <ImSearch.Provider value={{ style: { width: '24px' }}} >
+      <header className={css.searchbar}>
             <form onSubmit={handleSubmit} className={css.form}>
                 <button onClick={handleSubmit} type="submit" className={css.button}>
-                  <span className={css.buttonLabel}>Search</span>
+            <span className={css.buttonLabel}><ImSearch size={24}/></span>
                 </button>
           <input
             onChange={handleChange}
@@ -53,6 +55,7 @@ export default class Searchbar extends Component {
                 />
             </form>
         </header>
+      /* </ImSearch.Provider> */
     )
   }
 }

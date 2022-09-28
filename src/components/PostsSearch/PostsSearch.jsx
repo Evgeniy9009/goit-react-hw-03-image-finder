@@ -24,54 +24,37 @@ export default class PostsSearch extends Component {
 
   componentDidUpdate(_, prevState) {
     const { search, page } = this.state
-    // const {state} = this
-    
+
     if (prevState.search !== search || page !== prevState.page) {
-      this.fetchPostsNextPage(search, page)
+      this.fetchPosts(search, page)
+    }   
     }
-    if (prevState.search !== search) {
-      this.setState(({ items, search, page }) => {
-        return {
-          items: [],
-          search,
-          page: 1,
-        }
-      })
-    }
-  }
-
-  //   if (page > prevState.page) {
-  //     this.fetchPostsNextPage(search, page)
-  //   }
-  //       if ((search && prevState.search !== search) ) {
-  //     this.fetchPosts(search, page)
-  //   } 
-  // }
   
-  async fetchPosts() {
-    const { search, page } = this.state
-    this.setState({
-      loading: true
-    })
-    try {
-      const data = await searchPosts(search, page)
-      this.setState(() => {
-        return {
-          items: [...data]
-        }
-      })
-    } catch (error) {
-      this.setState({
-        error
-      })      
-    } finally {
-      this.setState({
-        loading: false
-      })
-    }
-  }
 
-  async fetchPostsNextPage() {
+  // async fetchPosts() {
+  //   const { search, page } = this.state
+  //   this.setState({
+  //     loading: true
+  //   })
+  //   try {
+  //     const data = await searchPosts(search, page)
+  //     this.setState(() => {
+  //       return {
+  //         items: [...data]
+  //       }
+  //     })
+  //   } catch (error) {
+  //     this.setState({
+  //       error
+  //     })      
+  //   } finally {
+  //     this.setState({
+  //       loading: false
+  //     })
+  //   }
+  // }
+
+  async fetchPosts() {
     const { search, page } = this.state
     this.setState({
       loading: true
@@ -80,7 +63,8 @@ export default class PostsSearch extends Component {
       const data = await searchPosts(search, page)
       const hits = data.hits
       const totalHits = data.totalHits
-      console.log("totalHits : " , totalHits)
+      console.log("totalHits : ", totalHits)
+      console.log("items.length : " , this.state.items.length)
       this.setState(({ items }) => {
         return {
           totalHits,
@@ -99,21 +83,18 @@ export default class PostsSearch extends Component {
   }
 
   onSearch = ({ search }) => {
-    this.setState({
-      search
-    })
+    if (this.state.search !== search) {
+      this.setState(() => {
+        return {
+          items: [],
+          search,
+          page: 1,
+        }
+      })
+    }
   }
 
-  // loadMore = () => {
-  //   console.log("loadMore", this.state.page)
-  //   this.setState(({ page }) => {
-  //     return {
-  //       page: page + 1
-  //     }  
-  //   })
-  // }
-  
-  loadMore = () => {
+ loadMore = () => {
     this.setState(({ page }) => {
       console.log(page)
         return {
@@ -122,9 +103,7 @@ export default class PostsSearch extends Component {
     })
   }
 
-
-
-  openModal = (modalContent) => {
+openModal = (modalContent) => {
     console.log("openModal", modalContent)
     console.log( "openModal", modalContent)
     this.setState({
@@ -141,20 +120,24 @@ export default class PostsSearch extends Component {
     })
   }
 
+  
 
   render() {
     const { totalHits ,items, loading, error, modalOpen, modalContent } = this.state;
-    const {onSearch, loadMore, openModal, closeModal} = this
+    const { onSearch, loadMore, openModal, closeModal } = this
+    console.log(!loading, items.length, totalHits)
+    console.log( Boolean(0 < items.length < totalHits) )
+
     return (
       <>
         <Searchbar onSubmit={onSearch} />
         {modalOpen && <Modal onClose={closeModal} modalContent={modalContent} />}
-        {loading && <Loader />} 
+        
         {error && <p>Будь ласка спробуйте пізніше...</p>}
         {totalHits === 0 && <p>Нічього не знайдено...</p>}
-
         {items.length && <ImageGallery items={items} onClick={openModal} largeImageURL={modalContent.largeImageURL} />}
-        {items.length >= 12 && <Button onClick={loadMore} text="Load more"/>}
+        {loading &&<Loader />} 
+        {!loading && 0 < items.length < totalHits-1 && <Button onClick={loadMore} text="Load more" />}
       </>
     )
   }
